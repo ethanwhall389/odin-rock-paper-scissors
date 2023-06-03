@@ -22,11 +22,37 @@ function gameRound (playerSelection, computerSelection) {
 }
 
 function game () {
-    let playerChoice = prompt('Would you like to play as Rock, Paper, or Scissors?');
     let numOfUserWins = 0;
     let numOfComputerWins = 0;
+    let numOfTies = 0;
+    let currentRound = 1;
     for (let i = 0; i < 5; i++) {
-        console.log(gameRound(playerChoice, getComputerChoice()));
+        let playerChoice = prompt('Would you like to play as Rock, Paper, or Scissors?');
+        let winner = gameRound(playerChoice, getComputerChoice());
+        console.log(winner);
+        
+        if (winner.includes('lose')) {
+            numOfComputerWins++;
+        } else if (winner.includes('win')) {
+            numOfUserWins++;
+        } else {
+            numOfTies++;
+        }
+
+        currentRound++;
+        console.log(`Current  round: ${currentRound} of 5.`)
+
+        console.log(`Number of computer wins so far: ${numOfComputerWins}.`);
+        console.log(`Number of user wins so far: ${numOfUserWins}.`);
+        console.log(`Number of ties so far: ${numOfTies}.`);
+    }
+
+    if (numOfUserWins > numOfComputerWins) {
+        alert(`You won the match! Your wins: ${numOfUserWins} | Computer wins: ${numOfComputerWins} | Ties: ${numOfTies} ties.`);
+    } else if (numOfComputerWins > numOfUserWins) {
+        alert(`You lost the match! Your wins: ${numOfUserWins} | Computer wins: ${numOfComputerWins} | Ties: ${numOfTies} ties.`);
+    } else if (numOfUserWins === 0 && numOfComputerWins == 0) {
+        alert(`Nobody won the match! You had ${numOfUserWins} wins and the computer had ${numOfComputerWins}, but there were ${numOfTies} ties!`);
     }
 
 }
