@@ -27,9 +27,23 @@ function game () {
     let numOfTies = 0;
     let currentRound = 1;
     for (let i = 0; i < 5; i++) {
-        let playerChoice = prompt('Would you like to play as Rock, Paper, or Scissors?');
-        let winner = gameRound(playerChoice, getComputerChoice());
-        console.log(winner);
+        
+        let bttnRock = document.querySelector('#rock');
+        let bttnPaper = document.querySelector('#paper');
+        let bttnScissors = document.querySelector('#scissors');
+        bttnRock.addEventListener('click', () => {
+            playerChoice = 'rock'
+            console.log(gameRound('rock', getComputerChoice()));
+        });
+        bttnPaper.addEventListener('click', () => {
+            playerChoice = 'paper'
+            console.log(gameRound('paper', getComputerChoice()));
+        });
+        bttnScissors.addEventListener('click', () => {
+            playerChoice = 'scissors'
+            console.log(gameRound('scissors', getComputerChoice()));
+        });
+
         
         if (winner.includes('lose')) {
             numOfComputerWins++;
@@ -58,5 +72,7 @@ function game () {
 }
 
 game();
+
+
 
 
