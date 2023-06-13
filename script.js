@@ -36,32 +36,43 @@ function game () {
     let bttnScissors = document.querySelector('#scissors');
     let resultsDiv = document.querySelector('.resultsContainer');
     let result = document.createElement('p');
+    let scoreDiv = document.querySelector('.scoreContainer');
+    let score = document.createElement('p');
     resultsDiv.appendChild(result);
+    scoreDiv.appendChild(score);
     let numOfRounds = 5;
-    console.log(currentRound);
-
-
+    
+    
+    score.textContent = `Current round: ${currentRound} of 5`;   
 
     bttnRock.addEventListener('click', () => {
         result.textContent = (gameRound('rock', getComputerChoice()));
         currentRound++;
-        console.log(`Current round: ${currentRound}`);
-        if (currentRound > numOfRounds) endGame();
+        if (currentRound > numOfRounds) {
+          endGame();  
+        } else {
+            score.textContent = `Current round: ${currentRound} of 5`;   
+        }
     });
 
     bttnPaper.addEventListener('click', () => {
         result.textContent = (gameRound('paper', getComputerChoice()));
         currentRound++;
-        console.log(currentRound);
-        if (currentRound > numOfRounds) endGame();
-
+        if (currentRound > numOfRounds) {
+            endGame();  
+          } else {
+            score.textContent = `Current round: ${currentRound} of 5`;   
+          }
     });
+
     bttnScissors.addEventListener('click', () => {
         result.textContent = (gameRound('scissors', getComputerChoice()));
         currentRound++;
-        console.log(currentRound);
-        if (currentRound > numOfRounds) endGame();
-
+        if (currentRound > numOfRounds) {
+            endGame();  
+          } else {
+            score.textContent = `Current round: ${currentRound} of 5`;   
+          }
     });
 
     // console.log(`Current  round: ${currentRound} of 5.`)
@@ -74,14 +85,41 @@ function game () {
 
 
     function endGame () {
-     if (numOfUserWins > numOfComputerWins) {
-        console.log(`You won the match! Your wins: ${numOfUserWins} | Computer wins: ${numOfComputerWins} | Ties: ${numOfTies} ties.`);
-    } else if (numOfComputerWins > numOfUserWins) {
-       console.log(`You lost the match! Your wins: ${numOfUserWins} | Computer wins: ${numOfComputerWins} | Ties: ${numOfTies} ties.`);
-    } else if (numOfUserWins === 0 && numOfComputerWins == 0) {
-        console.log(`Nobody won the match! You had ${numOfUserWins} wins and the computer had ${numOfComputerWins}, but there were ${numOfTies} ties!`);
-    }   
+        resultsDiv.style.display = 'none';
+        scoreDiv.style.display = 'none';
+
+        let winnerDiv = document.querySelector('.winnerContainer');
+        let winner = document.createElement('p');
+        winnerDiv.appendChild(winner);
+
+        let bttnContainer = document.querySelector('.buttonContainer');
+        bttnContainer.style.display = 'none';
+
+        
+        if (numOfUserWins > numOfComputerWins) {
+            winner.textContent = `You won the match! Your wins: ${numOfUserWins} | Computer wins: ${numOfComputerWins} | Ties: ${numOfTies} ties.`;
+        } else if (numOfComputerWins > numOfUserWins) {
+        winner.textContent = `You lost the match! Your wins: ${numOfUserWins} | Computer wins: ${numOfComputerWins} | Ties: ${numOfTies} ties.`;
+        } else if (numOfUserWins === 0 && numOfComputerWins == 0) {
+            winner.textContent = `Nobody won the match! You had ${numOfUserWins} wins and the computer had ${numOfComputerWins}, but there were ${numOfTies} ties!`;
+        } 
+        
+        let resetGameBttn = document.createElement('button');
+        resetGameBttn.textContent = 'Play again';
+        winnerDiv.appendChild(resetGameBttn);
+        resetGameBttn.addEventListener('click', resetGame);
+    
+    
+        function resetGame () {
+            winnerDiv.removeChild(resetGameBttn);
+            winnerDiv.removeChild(winner);
+            bttnContainer.style.display = 'block';
+            resultsDiv.style.display = 'block';
+            scoreDiv.style.display = 'block';
+            currentRound = 1;
+        }
     }
+
   
 }
 
