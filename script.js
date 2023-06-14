@@ -8,19 +8,16 @@ function getComputerChoice () {
 function gameRound (playerSelection, computerSelection) {
     let lowerCasePlayer = playerSelection.toLowerCase();
     let lowerCaseComputer = computerSelection.toLowerCase();
-    let outputWin = `You win! ${playerSelection} beats ${computerSelection}`;
-    let outputLose = `You lose! ${computerSelection} beats ${playerSelection}`;
-    let outputTie = `It's a tie! You both chose ${playerSelection}`;
+    let outputWin = `You win! ${playerSelection} beats ${lowerCaseComputer}`;
+    let outputLose = `You lose! ${computerSelection} beats ${lowerCasePlayer}`;
+    let outputTie = `It's a tie! You both chose ${lowerCasePlayer}`;
     
 
     if ((lowerCaseComputer === 'rock' && lowerCasePlayer === 'paper') || (lowerCaseComputer === 'paper' && lowerCasePlayer === 'scissors') || (lowerCaseComputer === 'scissors' && lowerCasePlayer === 'rock') ) {
-        // numOfUserWins++;
         return outputWin;
     } else if ((lowerCaseComputer === 'rock' && lowerCasePlayer === 'scissors') || (lowerCaseComputer === 'paper' && lowerCasePlayer === 'rock') || (lowerCaseComputer === 'scissors' && lowerCasePlayer === 'paper') ) {
-        // numOfComputerWins++;
         return outputLose;
     } else {
-        // numOfTies++;
         return outputTie;
     }
 }
@@ -39,39 +36,75 @@ function game () {
     let scoreDiv = document.querySelector('.scoreContainer');
     let score = document.createElement('p');
     resultsDiv.appendChild(result);
+    resultsDiv.style.display = 'hide';
     scoreDiv.appendChild(score);
     let numOfRounds = 5;
+    let bttnRounds = document.querySelector('.bttnRounds');
+    bttnRounds.addEventListener('click', () => {
+        inputValue = document.querySelector('input').value;
+        if (!inputValue) {
+            return;
+        } else {
+            numOfRounds = inputValue;
+            score.textContent = `Current round: ${currentRound} of ${numOfRounds}`;   
+        }
+
+    })
     
     
-    score.textContent = `Current round: ${currentRound} of 5`;   
+    score.textContent = `Current round: ${currentRound} of ${numOfRounds}`;   
 
     bttnRock.addEventListener('click', () => {
-        result.textContent = (gameRound('rock', getComputerChoice()));
+        let winner = result.textContent = (gameRound('Rock', getComputerChoice()));
         currentRound++;
+        resultsDiv.style.display = 'block';
+        if (winner.includes('lose')) {
+            numOfComputerWins++;
+        } else if (winner.includes('win')) {
+            numOfUserWins++;
+        } else {
+            numOfTies++;
+        }
         if (currentRound > numOfRounds) {
           endGame();  
         } else {
-            score.textContent = `Current round: ${currentRound} of 5`;   
+            score.textContent = `Current round: ${currentRound} of ${numOfRounds}`;   
         }
     });
 
     bttnPaper.addEventListener('click', () => {
-        result.textContent = (gameRound('paper', getComputerChoice()));
+        let winner = result.textContent = (gameRound('Paper', getComputerChoice()));
         currentRound++;
+        if (winner.includes('lose')) {
+            numOfComputerWins++;
+        } else if (winner.includes('win')) {
+            numOfUserWins++;
+        } else {
+            numOfTies++;
+        }
+
         if (currentRound > numOfRounds) {
             endGame();  
           } else {
-            score.textContent = `Current round: ${currentRound} of 5`;   
+            score.textContent = `Current round: ${currentRound} of ${numOfRounds}`;   
           }
     });
 
     bttnScissors.addEventListener('click', () => {
-        result.textContent = (gameRound('scissors', getComputerChoice()));
+        let winner = result.textContent = (gameRound('Scissors', getComputerChoice()));
         currentRound++;
+        if (winner.includes('lose')) {
+            numOfComputerWins++;
+        } else if (winner.includes('win')) {
+            numOfUserWins++;
+        } else {
+            numOfTies++;
+        }
+
         if (currentRound > numOfRounds) {
             endGame();  
           } else {
-            score.textContent = `Current round: ${currentRound} of 5`;   
+            score.textContent = `Current round: ${currentRound} of ${numOfRounds}`;   
           }
     });
 
@@ -97,9 +130,11 @@ function game () {
 
         
         if (numOfUserWins > numOfComputerWins) {
-            winner.textContent = `You won the match! Your wins: ${numOfUserWins} | Computer wins: ${numOfComputerWins} | Ties: ${numOfTies} ties.`;
+            winner.textContent = `You won the match! Your wins: ${numOfUserWins} | Computer wins: ${numOfComputerWins} | Ties: ${numOfTies}`;
         } else if (numOfComputerWins > numOfUserWins) {
-        winner.textContent = `You lost the match! Your wins: ${numOfUserWins} | Computer wins: ${numOfComputerWins} | Ties: ${numOfTies} ties.`;
+        winner.textContent = `You lost the match! Your wins: ${numOfUserWins} | Computer wins: ${numOfComputerWins} | Ties: ${numOfTies}`;
+        } else if (numOfUserWins === numOfComputerWins) {
+            winner.textContent = `It's a tie! You had ${numOfUserWins} wins and the computer had ${numOfComputerWins}.`
         } else if (numOfUserWins === 0 && numOfComputerWins == 0) {
             winner.textContent = `Nobody won the match! You had ${numOfUserWins} wins and the computer had ${numOfComputerWins}, but there were ${numOfTies} ties!`;
         } 
@@ -114,9 +149,14 @@ function game () {
             winnerDiv.removeChild(resetGameBttn);
             winnerDiv.removeChild(winner);
             bttnContainer.style.display = 'block';
-            resultsDiv.style.display = 'block';
+            resultsDiv.style.display = 'hide';
             scoreDiv.style.display = 'block';
             currentRound = 1;
+            score.textContent = `Current round: ${currentRound} of ${numOfRounds}`;
+            numOfRounds = 5;
+            numOfUserWins = 0;
+            numOfComputerWins = 0;
+            numOfTies = 0;
         }
     }
 
